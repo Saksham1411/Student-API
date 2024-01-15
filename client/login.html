@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.5/axios.min.js"
+    integrity="sha512-TjBzDQIDnc6pWyeM1bhMnDxtWH0QpOXMcVooglXrali/Tj7W569/wd4E8EDjk1CwOAOPSJon1VfcEt1BI4xIrA=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+    ></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Document</title>
+</head>
+<body class="bg-gray-700 text-white">
+  <nav class="bg-gray-900 py-4 px-12">
+    <ul class="flex justify-end gap-4">
+      <li><a href="./index.html">home</a></li>
+      <li><a href="./login.html">login</a></li>
+      <li><a href="./register.html">register</a></li>
+    </ul>
+  </nav>
+  <div class="flex flex-col items-center justify-center gap-8 m-8">
+    <h1 class="text-2xl font-bold">Login</h1>
+    <p id="msg" class="uppercase text-xl font-semibold"></p>
+    <form class="flex flex-col gap-2">
+      <label for="emailIn">Email</label>
+      <input type="text" name="email" id="emailIn" class="border text-black px-2 rounded"
+      />
+      <label for="passIn">Password</label>
+      <input type="password" name="password" id="passIn" class="border text-black px-2 rounded"
+      />
+    <button type="submit" id="button" class="border px-6 rounded-md">Login</button>
+  </form>
+
+
+    <script>
+        const email = document.getElementById("emailIn");
+        const password = document.getElementById("passIn");
+        const btn = document.getElementById("button");
+        const msg = document.getElementById('msg');
+
+        const URL = "http://localhost:3000/login";
+  
+        btn.addEventListener("click", async (e) => {
+          e.preventDefault();
+          try {
+              const response = await axios.post(URL, { email: email.value, password: password.value });
+              const token = await response.data.token;
+              localStorage.setItem("token",token);
+              location.replace('/client/index.html');
+              // console.log(response.data);
+          } catch (error) {
+            msg.innerHTML = error.response.data; 
+            console.log(error.response.data);
+              // console.log('duplicate');
+          }
+        });
+      </script>
+</body>
+</html>

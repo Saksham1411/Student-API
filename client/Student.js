@@ -3,8 +3,23 @@ const rollno = document.getElementById('rollnoInput');
 const Submitbtn = document.getElementById('submitBtn');
 const getAllBtn = document.getElementById('getAllBtn');
 let table = document.getElementById('output');
+const logout = document.getElementById('logout');
 
 const URL = "http://localhost:3000/students";
+
+const token = localStorage.getItem('token');
+
+if(!token){
+    document.getElementById('main').innerHTML = `
+    <h1 class="text-center m-16 text-3xl font-bold">You are not Authorized<br>
+        <span class="text-xl font-normal">Go back to login page
+            <a href="./login.html" class="underline">login</a>
+        </span>
+    </h1>
+    `;
+}
+
+axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
 Submitbtn.addEventListener('click', async (e) => {
     e.preventDefault();
@@ -18,6 +33,7 @@ Submitbtn.addEventListener('click', async (e) => {
         alert('Student added');
     // console.log(res);
     } catch (error) {
+        console.log(error);
         alert('Student already exist');
     }
     
@@ -62,8 +78,12 @@ table.addEventListener('click', async (e) => {
         let id = e.target.id;
         console.log(id);
         let changedName = prompt("Enter the new name");
-        await axios.put(`http://localhost:3000/students/${id}`, { name: changedName });
         table.innerHTML = '';
         showTasks();
     }
+})
+
+logout.addEventListener('click',(e)=>{
+    localStorage.removeItem('token');
+    location.reload();
 })
