@@ -79,6 +79,7 @@ table.addEventListener('click', async (e) => {
         console.log(id);
         let changedName = prompt("Enter the new name");
         table.innerHTML = '';
+        await axios.put(`http://localhost:3000/students/${id}`, { name: changedName });
         showTasks();
     }
 })
